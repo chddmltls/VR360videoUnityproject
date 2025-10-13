@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Video;
+using UnityEngine.Video; //<-이거 중요 시험에 나옴. 유니티에서 비디오 쓰려면 이렇게 using써줘야함.
 
 public class VideoFrame : MonoBehaviour
 {

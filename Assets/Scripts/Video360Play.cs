@@ -22,21 +22,21 @@ public class Video360Play : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftBracket))
+        if (Input.GetKeyDown(KeyCode.LeftBracket)) // [를 누르면 그전꺼 출력
         {
-            curVCidx = curVCidx - 1;
-            if (curVCidx < 0)
+            curVCidx = curVCidx - 1; //그 전꺼 이므로 -1을 해줘야함.
+            if (curVCidx < 0) //근데 음수를 출력할순 없기떄문에 조건을 달아주기.
             {
-                curVCidx = curVCidx + vcList.Length; //vsList에 있는 전체값 (3)
+                curVCidx = curVCidx + vcList.Length; //vsList에 있는 전체값 (3)을 음수가 된 curVCidx에 더해줌. 그러면 2번째께 재생
             }
-            vp.clip = vcList[curVCidx];
+            vp.clip = vcList[curVCidx]; //위에서 계산한 값에 해당하는 비디오 재생
         }
-        if (Input.GetKeyDown(KeyCode.RightBracket))
+        if (Input.GetKeyDown(KeyCode.RightBracket)) // ]를 누르면 그 다음꺼 출력
         {
             curVCidx = curVCidx + 1;
-            if (curVCidx >= vcList.Length)
+            if (curVCidx >= vcList.Length) //만약 숫자가 3보다 커지면.....
             {
-                curVCidx = curVCidx - vcList.Length; //vsList에 있는 전체값 (3)
+                curVCidx = curVCidx - vcList.Length; //vsList에 있는 전체값 (3)에서 빼서 다시 돌아오게.
             }
             vp.clip = vcList[curVCidx];
         }
