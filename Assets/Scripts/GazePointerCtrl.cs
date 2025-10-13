@@ -69,7 +69,7 @@ public class GazePointerCtrl : MonoBehaviour
         else //오브젝트를 바라보고 있지 않을때
         {
             curGazeTime = 0;
-            if(preHitObj ! = null)
+            if(preHitObj != null)
             {
                 HitObjChecker(curHitObj, false);
                 preHitObj = null;
