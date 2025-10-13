@@ -1,0 +1,101 @@
+using System.Collections;
+using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GazePointerCtrl : MonoBehaviour
+{
+    public Transform uiCanvas; //캔버스
+    public UnityEngine.UI.Image gazeImg; //캔버스에 들갈 이미지
+
+    Vector3 defalutScale;
+    public float uiScaleVal = 1f;
+
+    bool isHitObj;
+    GameObject preHitObj;
+    GameObject curHitObj;
+    //float curGazeTime;
+    public float gazeChargeTime = 3.0f;
+    float curGazeTime = 0f;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        defalutScale = uiCanvas.localScale;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // 캔버스 오브젝트의 스케일을 거리에 따라서 조종
+        // 1. 카메라를 기준으로 전방 방향의 좌표 정보 담기 (각도)
+        Vector3 dir = transform.TransformPoint(Vector3.forward);
+        // 2. 카메라 전방으로 Ray설정
+        Ray ray = new Ray(transform.position, dir); //점에서 앞 방향으로 레이를 쏨
+        RaycastHit hitInfo;
+        // 3. 레이에 부딫힌 경우 거리값이용해 uiCanvas의 크기를 조절
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            uiCanvas.localScale = defalutScale * uiScaleVal * hitInfo.distance;
+            uiCanvas.position = transform.forward * hitInfo.distance;
+            if (hitInfo.transform.tag == "GazeObj")
+            {
+                isHitObj = true;
+            }
+            curHitObj = hitInfo.transform.gameObject;
+        }
+        else // 4. 충돌 발생 안하는 경우 -> 기본 스케일 값으로 uiCanvas크기 조절
+        {
+            uiCanvas.localScale = defalutScale * uiScaleVal;
+            uiCanvas.position = transform.position + dir;
+        }
+        // 5. uiCanvas가 사용자를 바라볼수 있도록 반전 (전면 방향을 반대로 바꾸기)
+        uiCanvas.forward = uiCanvas.forward * -1;
+
+        //데이터 처리
+        if (isHitObj)
+        {
+            if (curHitObj == preHitObj) //충돌과 바라보는게 같을때 -> 바라보고있음을 설명가능
+            {
+                curGazeTime = curGazeTime + Time.deltaTime;
+            }
+            else
+            {
+                preHitObj = curHitObj;
+            }
+            HitObjChecker(curHitObj, true);
+        }
+        else //오브젝트를 바라보고 있지 않을때
+        {
+            curGazeTime = 0;
+            if(preHitObj ! = null)
+            {
+                HitObjChecker(curHitObj, false);
+                preHitObj = null;
+            }
+        }
+
+        curGazeTime = Mathf.Clamp(curGazeTime, 0, gazeChargeTime); //최솟 최댓값 사이 계산
+        gazeImg.fillAmount = curGazeTime / gazeChargeTime; //0 ~ 100% 값표햔
+
+        //다음을 위한 후속 조치
+        isHitObj = false; //위에 트루가 계속 남아있을수 있으므로
+        curHitObj = null; //현재보는 오브젝트 비게 만들기
+    }
+
+    void HitObjChecker(GameObject hitObj, bool isActive)
+    {
+        if (hitObj.GetComponent<VideoFrame>())
+        {
+            if (isActive)
+            {
+                hitObj.GetComponent<VideoFrame>().CheckVideoFrame(true);
+            }
+            else
+            {
+                hitObj.GetComponent<VideoFrame>().CheckVideoFrame(false);
+            }
+        }
+    }
+}
