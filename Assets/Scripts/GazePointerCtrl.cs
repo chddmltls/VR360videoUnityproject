@@ -12,17 +12,18 @@ public class GazePointerCtrl : MonoBehaviour
     Vector3 defalutScale;
     public float uiScaleVal = 1f;
 
-    bool isHitObj;
-    GameObject preHitObj;
-    GameObject curHitObj;
+    bool isHitObj; //인터렉션이 일어나는 오브젝트에 시선이 닿으면 트루, 닿지 않을시 팔스
+    GameObject preHitObj; // 이전 프레임의 시선이 머물렀던 오브젝트 정보 담는 변수
+    GameObject curHitObj; //현재 프레임의 시선이 머무르는 오브젝트 정보를 담는 변수
     //float curGazeTime;
-    public float gazeChargeTime = 3.0f;
-    float curGazeTime = 0f;
+    public float gazeChargeTime = 3.0f; //시선이 머무는 시간 체크
+    float curGazeTime = 0f; //현재의 게이즈 시간 (초기화)
 
     // Start is called before the first frame update
     void Start()
     {
         defalutScale = uiCanvas.localScale;
+        curGazeTime = 0f; //시선체크 관련 변수 시작했을때 초기화
     }
 
     // Update is called once per frame
@@ -51,18 +52,18 @@ public class GazePointerCtrl : MonoBehaviour
             uiCanvas.position = transform.position + dir;
         }
         // 5. uiCanvas가 사용자를 바라볼수 있도록 반전 (전면 방향을 반대로 바꾸기)
-        uiCanvas.forward = uiCanvas.forward * -1;
+        uiCanvas.forward = transform.forward * -1;
 
         //데이터 처리
-        if (isHitObj)
+        if (isHitObj) //오브젝트에 레이가 닿았을때
         {
             if (curHitObj == preHitObj) //충돌과 바라보는게 같을때 -> 바라보고있음을 설명가능
             {
-                curGazeTime = curGazeTime + Time.deltaTime;
+                curGazeTime = curGazeTime + Time.deltaTime; //바라볼때 시간증가, 게이지 증가
             }
             else
             {
-                preHitObj = curHitObj;
+                preHitObj = curHitObj; //이전 프레임의 영상 정보 업데이트
             }
             HitObjChecker(curHitObj, true);
         }
@@ -71,22 +72,22 @@ public class GazePointerCtrl : MonoBehaviour
             curGazeTime = 0;
             if(preHitObj != null)
             {
-                HitObjChecker(curHitObj, false);
+                HitObjChecker(preHitObj, false);
                 preHitObj = null;
             }
         }
 
-        curGazeTime = Mathf.Clamp(curGazeTime, 0, gazeChargeTime); //최솟 최댓값 사이 계산
-        gazeImg.fillAmount = curGazeTime / gazeChargeTime; //0 ~ 100% 값표햔
+        curGazeTime = Mathf.Clamp(curGazeTime, 0, gazeChargeTime); //시선이 머무는 시간을 최솟 최댓값 사이 계산
+        gazeImg.fillAmount = curGazeTime / gazeChargeTime; //0 ~ 100% 값표현. 게이지 차오르는 기능
 
         //다음을 위한 후속 조치
         isHitObj = false; //위에 트루가 계속 남아있을수 있으므로
         curHitObj = null; //현재보는 오브젝트 비게 만들기
     }
 
-    void HitObjChecker(GameObject hitObj, bool isActive)
+    void HitObjChecker(GameObject hitObj, bool isActive) //히트된 오브젝트 타입별로 작동 방식 구분
     {
-        if (hitObj.GetComponent<VideoFrame>())
+        if (hitObj.GetComponent<VideoFrame>())//hit가 비디오 플레이어 컴포넌트를 갖고 있는지 확인
         {
             if (isActive)
             {

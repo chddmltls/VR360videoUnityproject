@@ -39,7 +39,7 @@ public class VideoFrame : MonoBehaviour
         }
     }
     
-    public void CheckVideoFrame(bool Checker)
+    public void CheckVideoFrame(bool Checker) //게이즈포인터컨트롤에서 영상 재생을 컨트롤하기 위한 함수
     {
         if (Checker)
         {
