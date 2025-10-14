@@ -38,18 +38,18 @@ public class GazePointerCtrl : MonoBehaviour
         // 3. 레이에 부딫힌 경우 거리값이용해 uiCanvas의 크기를 조절
         if (Physics.Raycast(ray, out hitInfo))
         {
-            uiCanvas.localScale = defalutScale * uiScaleVal * hitInfo.distance;
-            uiCanvas.position = transform.forward * hitInfo.distance;
+            uiCanvas.localScale = defalutScale * uiScaleVal * hitInfo.distance; // UI 크기를 거리에 비례하게 조절
+            uiCanvas.position = transform.forward * hitInfo.distance; // UI 위치를 충돌 지점 근처로 이동 (카메라 앞쪽에 위치)
             if (hitInfo.transform.tag == "GazeObj")
             {
                 isHitObj = true;
             }
-            curHitObj = hitInfo.transform.gameObject;
+            curHitObj = hitInfo.transform.gameObject; // 현재 시선이 닿은 오브젝트 저장
         }
         else // 4. 충돌 발생 안하는 경우 -> 기본 스케일 값으로 uiCanvas크기 조절
         {
-            uiCanvas.localScale = defalutScale * uiScaleVal;
-            uiCanvas.position = transform.position + dir;
+            uiCanvas.localScale = defalutScale * uiScaleVal; // 기본 스케일 유지
+            uiCanvas.position = transform.position + dir; // 카메라 앞 일정 거리로 위치시킴
         }
         // 5. uiCanvas가 사용자를 바라볼수 있도록 반전 (전면 방향을 반대로 바꾸기)
         uiCanvas.forward = transform.forward * -1;
@@ -65,7 +65,7 @@ public class GazePointerCtrl : MonoBehaviour
             {
                 preHitObj = curHitObj; //이전 프레임의 영상 정보 업데이트
             }
-            HitObjChecker(curHitObj, true);
+            HitObjChecker(curHitObj, true); // 현재 바라보는 오브젝트에 "시선이 닿았다" 신호 전달
         }
         else //오브젝트를 바라보고 있지 않을때
         {
@@ -77,7 +77,7 @@ public class GazePointerCtrl : MonoBehaviour
             }
         }
 
-        curGazeTime = Mathf.Clamp(curGazeTime, 0, gazeChargeTime); //시선이 머무는 시간을 최솟 최댓값 사이 계산
+        curGazeTime = Mathf.Clamp(curGazeTime, 0, gazeChargeTime); //시선이 머무는 시간을 최솟 최댓값 사이 계산 / 시선 유지 시간 제한 (0 ~ gazeChargeTime 사이로 고정)
         gazeImg.fillAmount = curGazeTime / gazeChargeTime; //0 ~ 100% 값표현. 게이지 차오르는 기능
 
         //다음을 위한 후속 조치
@@ -85,17 +85,17 @@ public class GazePointerCtrl : MonoBehaviour
         curHitObj = null; //현재보는 오브젝트 비게 만들기
     }
 
-    void HitObjChecker(GameObject hitObj, bool isActive) //히트된 오브젝트 타입별로 작동 방식 구분
+    void HitObjChecker(GameObject hitObj, bool isActive) //히트된 오브젝트 타입별로 작동 방식 구분 / 충돌한 오브젝트 타입에 따라 반응 제어
     {
-        if (hitObj.GetComponent<VideoFrame>())//hit가 비디오 플레이어 컴포넌트를 갖고 있는지 확인
+        if (hitObj.GetComponent<VideoFrame>())//hit가 비디오 플레이어 컴포넌트를 갖고 있는지 확인 / 오브젝트가 VideoFrame 컴포넌트를 가지고 있다면,
         {
             if (isActive)
             {
-                hitObj.GetComponent<VideoFrame>().CheckVideoFrame(true);
+                hitObj.GetComponent<VideoFrame>().CheckVideoFrame(true); // 시선이 닿았을 때 동작 (예: 비디오 재생)
             }
             else
             {
-                hitObj.GetComponent<VideoFrame>().CheckVideoFrame(false);
+                hitObj.GetComponent<VideoFrame>().CheckVideoFrame(false); // 시선이 떠났을 때 동작 (예: 비디오 정지)
             }
         }
     }
