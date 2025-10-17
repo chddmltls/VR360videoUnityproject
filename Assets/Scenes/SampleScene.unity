@@ -409,6 +409,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1833785531, guid: 004bc44822c1ef0409a57a2f34bc8f31, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 807848469262294734, guid: 004bc44822c1ef0409a57a2f34bc8f31, type: 3}
       propertyPath: m_Name
       value: Sphere_128_flip
@@ -452,6 +456,14 @@ PrefabInstance:
     - target: {fileID: 4753856491969038718, guid: 004bc44822c1ef0409a57a2f34bc8f31, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4856287445163038225, guid: 004bc44822c1ef0409a57a2f34bc8f31, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 5267099453561466822, guid: 004bc44822c1ef0409a57a2f34bc8f31, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -497,6 +509,10 @@ PrefabInstance:
     - target: {fileID: 2271615217707652742, guid: 1bc0b3fb1211a944e8d489d38e701540, type: 3}
       propertyPath: m_Name
       value: VideoFrameMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271615217707652742, guid: 1bc0b3fb1211a944e8d489d38e701540, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 5424568052566974215, guid: 1bc0b3fb1211a944e8d489d38e701540, type: 3}
       propertyPath: m_VideoClip
