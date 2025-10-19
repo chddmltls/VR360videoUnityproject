@@ -12,7 +12,7 @@ public class VideoFrame : MonoBehaviour
     {
         vp = GetComponent<VideoPlayer>();
         //영상재생을 멈춤
-        vp.Play(); //Video Frame에 있는 Video player의 영상을 멈추고 싶음
+        vp.Stop(); //Video Frame에 있는 Video player의 영상을 멈추고 싶음
     }
 
     // Update is called once per frame
