@@ -31,8 +31,7 @@ public class VideoFrame : MonoBehaviour
             {
                 vp.Pause();
             }
-
-            if (vp.isPaused)
+            else
             {
                 vp.Play();
             }

@@ -382,6 +382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiCanvas: {fileID: 2005275186}
   gazeImg: {fileID: 443620235}
+  vp360: {fileID: 1495063348}
   uiScaleVal: 1
   gazeChargeTime: 3
 --- !u!1 &965374309 stripped

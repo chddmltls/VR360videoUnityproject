@@ -8,6 +8,7 @@ public class GazePointerCtrl : MonoBehaviour
 {
     public Transform uiCanvas; //캔버스
     public UnityEngine.UI.Image gazeImg; //캔버스에 들갈 이미지
+    public Video360Play vp360; //360스피어에 추가된 영상 플레이 기능
 
     Vector3 defalutScale;
     public float uiScaleVal = 1f;
@@ -97,6 +98,11 @@ public class GazePointerCtrl : MonoBehaviour
             {
                 hitObj.GetComponent<VideoFrame>().CheckVideoFrame(false); // 시선이 떠났을 때 동작 (예: 비디오 정지)
             }
+        }
+
+        if (gazeImg.fillAmount >= 1) //영상 프레임을 충분히 보고 있을때 (게이지가 다 찼을때,)
+        {
+            vp360.SetVideoPlay(hitObj.transform.GetSiblingIndex()); //영상 인덱스 값 받아오기
         }
     }
 }

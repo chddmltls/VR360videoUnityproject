@@ -44,7 +44,17 @@ public class Video360Play : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftBracket))
         {
             curVCidx = (curVCidx - 1 + vcList.Length) % vcList.Length;//나머지 연산
-            vp.clip = vcList[curVCidx];
+        }
+    }
+
+    public void SetVideoPlay(int num)
+    {
+        if(curVCidx != num) //현재 재생중인 인덱스와 같지 않을때, 
+        {
+            vp.Stop(); //그 영상 멈추고
+            vp.clip = vcList[num]; //다른 영상으로 교환
+            curVCidx = num;
+            vp.Play(); //바뀐 영상을 재생
         }
     }
 }
